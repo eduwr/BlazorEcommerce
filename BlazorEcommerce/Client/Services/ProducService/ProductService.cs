@@ -8,7 +8,23 @@
         {
             _http = http;
         }
-        public List<Product> Products { get ; set ; } = new List<Product>();
+        public List<Product> Products { get; set; } = new List<Product>();
+
+        public async Task<ServiceResponse<Product>> GetProduct(int productId)
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<Product>>($"api/Product/{productId}");
+
+            if (result == null)
+            {
+                return new ServiceResponse<Product>()
+                {
+                    Success = false,
+                    Message = "Something went wrong"
+                };
+            }
+
+            return result;
+        }
 
         public async Task GetProducts()
         {
